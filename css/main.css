@@ -464,8 +464,7 @@ body {
 }
 .main {
   padding-bottom: 150px;
-  background-image: url("../images/21.jpg");
-  background-attachment: fixed;
+  background: url("../images/21.jpg") fixed;
 }
 .main-inner {
   margin: 0 auto;
