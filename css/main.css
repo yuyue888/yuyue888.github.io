@@ -464,6 +464,8 @@ body {
 }
 .main {
   padding-bottom: 150px;
+  background-image: url("../images/21.jpg");
+  background-attachment: fixed;
 }
 .main-inner {
   margin: 0 auto;
@@ -1706,7 +1708,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #fa9fd0;
+  background: #ffdacb;
 }
 .links-of-blogroll {
   font-size: 13px;
