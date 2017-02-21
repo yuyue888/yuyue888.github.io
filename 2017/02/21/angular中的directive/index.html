@@ -1,0 +1,706 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="angular 1.x," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="angular也用了大半年了，写个文章总结一下一些重要的机制吧。angular1.x版本中的一个一个重要特性就是指令（Directive）。指令功能十分强大，他的作用简单来说就是可以给HTML元素赋予特殊或自定义的行为，比如监听事件、视图模板代理等。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="angular中的directive">
+<meta property="og:url" content="http://yoursite.com/2017/02/21/angular中的directive/index.html">
+<meta property="og:site_name" content="Yuyue">
+<meta property="og:description" content="angular也用了大半年了，写个文章总结一下一些重要的机制吧。angular1.x版本中的一个一个重要特性就是指令（Directive）。指令功能十分强大，他的作用简单来说就是可以给HTML元素赋予特殊或自定义的行为，比如监听事件、视图模板代理等。">
+<meta property="og:image" content="http://yoursite.com/2017/02/21/angular中的directive/19.jpg">
+<meta property="og:updated_time" content="2017-02-21T16:12:08.638Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="angular中的directive">
+<meta name="twitter:description" content="angular也用了大半年了，写个文章总结一下一些重要的机制吧。angular1.x版本中的一个一个重要特性就是指令（Directive）。指令功能十分强大，他的作用简单来说就是可以给HTML元素赋予特殊或自定义的行为，比如监听事件、视图模板代理等。">
+<meta name="twitter:image" content="http://yoursite.com/2017/02/21/angular中的directive/19.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/02/21/angular中的directive/"/>
+
+
+
+
+
+  <title> angular中的directive | Yuyue </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Yuyue</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle"></p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/02/21/angular中的directive/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Sunsc">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/usericon.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Yuyue">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Yuyue" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                angular中的directive
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-21T22:37:46+08:00">
+                2017-02-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>angular也用了大半年了，写个文章总结一下一些重要的机制吧。<br>angular1.x版本中的一个一个重要特性就是指令（Directive）。指令功能十分强大，他的作用简单来说就是<br>可以给HTML元素赋予特殊或自定义的行为，比如监听事件、视图模板代理等。<br><img src="/2017/02/21/angular中的directive/19.jpg" alt="19.jpg" title=""><br><a id="more"></a></p>
+<h3 id="指令的形式"><a href="#指令的形式" class="headerlink" title="指令的形式"></a>指令的形式</h3><p>在AngularJS中，指令有四种表现形式：  </p>
+<ul>
+<li>E(元素)：<code>&lt;directiveName&gt;&lt;/directiveName&gt;</code></li>
+<li>A(属性)：<code>&lt;div directiveName=&#39;expression&#39;&gt;&lt;/div&gt;</code></li>
+<li>C(类)：<code>&lt;div class=&#39;directiveName&#39;&gt;&lt;/div&gt;</code></li>
+<li>M(注释)：<code>&lt;--directive:directiveName expression--&gt;</code></li>
+</ul>
+<p>可以在创建指令时通过设置restrict属性来定义指令的形式，一个指令可以同时有多种表现形式，<br>默认值为A。</p>
+<h3 id="指令的命名"><a href="#指令的命名" class="headerlink" title="指令的命名"></a>指令的命名</h3><p>一般情况下在定义指令时推荐使用驼峰命名法，比如ngModel、ngApp，<br>但是在HTML中大小写是不敏感的，所以在HTML中使用指令时推荐使用小写字母加破折号的形式，<br>比如<code>ng-model</code>、<code>ng-app</code>。<br>除了使用小写破折号这种方式，还有以下几种使用写法<del>比较少用</del>：  </p>
+<ul>
+<li>ng:model </li>
+<li>ng_model </li>
+<li>data-ng-bind </li>
+<li>x-ng-bind</li>
+</ul>
+<h3 id="创建指令"><a href="#创建指令" class="headerlink" title="创建指令"></a>创建指令</h3><p>指令也是通过AngularJS的Model创建的，<br>使用<code>directive(name, directiveFactory)</code>方法创建指令，第一个参数是指令名称，<br>第二个参数是一个工厂函数，该函数需要返回一个对象，<br>通过配置该对象中的不同属性从而令AngularJS内置的$compile服务实现指令的不同功能。<br>下面是一个创建指令的简单demo( <a href="https://github.com/johnpapa/angular-styleguide/blob/master/a1/i18n/zh-CN.md#directives和controlleras" target="_blank" rel="external">来源</a> )</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">angular</div><div class="line">    .module(&apos;app&apos;)</div><div class="line">    .directive(&apos;myExample&apos;, myExample);</div><div class="line"></div><div class="line">function myExample() &#123;</div><div class="line">    var directive = &#123;</div><div class="line">        restrict: &apos;EA&apos;,</div><div class="line">        templateUrl: &apos;app/feature/example.directive.html&apos;,</div><div class="line">        scope: &#123;</div><div class="line">            max: &apos;=&apos;</div><div class="line">        &#125;,</div><div class="line">        link: linkFunc,</div><div class="line">        controller : ExampleController,</div><div class="line">        controllerAs: &apos;vm&apos;,</div><div class="line">        bindToController: true // because the scope is isolated</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    return directive;</div><div class="line"></div><div class="line">    function linkFunc(scope, el, attr, ctrl) &#123;</div><div class="line">        console.log(&apos;LINK: scope.min = %s *** should be undefined&apos;, scope.min);</div><div class="line">        console.log(&apos;LINK: scope.max = %s *** should be undefined&apos;, scope.max);</div><div class="line">        console.log(&apos;LINK: scope.vm.min = %s&apos;, scope.vm.min);</div><div class="line">        console.log(&apos;LINK: scope.vm.max = %s&apos;, scope.vm.max);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">ExampleController.$inject = [&apos;$scope&apos;];</div><div class="line">function ExampleController($scope) &#123;</div><div class="line">    // Injecting $scope just for comparison</div><div class="line">    var vm = this;</div><div class="line"></div><div class="line">    vm.min = 3;</div><div class="line"></div><div class="line">    console.log(&apos;CTRL: $scope.vm.min = %s&apos;, $scope.vm.min);</div><div class="line">    console.log(&apos;CTRL: $scope.vm.max = %s&apos;, $scope.vm.max);</div><div class="line">    console.log(&apos;CTRL: vm.min = %s&apos;, vm.min);</div><div class="line">    console.log(&apos;CTRL: vm.max = %s&apos;, vm.max);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;!-- example.directive.html --&gt;</div><div class="line">   &lt;div&gt;hello world&lt;/div&gt;</div><div class="line">   &lt;div&gt;max=&#123;&#123;vm.max&#125;&#125;&lt;input ng-model=&quot;&#123;&#123;vm.max&#125;&#125;&quot;/&gt;&lt;/div&gt;</div><div class="line">   &lt;div&gt;min=&#123;&#123;vm.min&#125;&#125;&lt;input ng-model=&quot;&#123;&#123;vm.min&#125;&#125;&quot;/&gt;&lt;/div&gt;</div></pre></td></tr></table></figure>
+<p>在HTML页面中使用：<br><code>&lt;div my-example max=&quot;77&quot;&gt;&lt;/div&gt;</code></p>
+<h3 id="指令属性配置"><a href="#指令属性配置" class="headerlink" title="指令属性配置"></a>指令属性配置</h3><p>下面详细介绍各个可配置的属性：</p>
+<ul>
+<li>restrict:指令的形式,例如<code>restrict：&#39;EA&#39;</code>则表示指令在DOM里面可用元素形式和属性形式被声明,<br>如果想支持IE8，最好使用属性和类形式来定义。</li>
+<li>template:指定一个内嵌模板，可以使字符串（一段HTML文本）或者函数。当为函数时，<br>可接受两个参数tElement和tAttrs。第一个参数代表当前的HTML DOM元素，<br>而第二个参数为实例的属性，它是一个由元素上所有的属性组成的集合（对象）</li>
+<li>templateUrl:指定模板加载的URL,当已经设置template时不会生效。<br>由于加载html模板是通过异步加载的，若加载大量的模板会拖慢网站的速度。<br>可以通过先缓存模板来加快加载模板的速度。</li>
+<li>scope:（1）默认值false。<pre><code>表示继承父作用域;
+（2）true
+表示继承父作用域，并创建自己的作用域（子作用域）;
+（3）{}
+表示创建一个全新的隔离作用域；关于scope会在下一节继续说明。
+</code></pre></li>
+<li>link:</li>
+<li>controller:</li>
+<li>controllerAs:</li>
+<li>bindToController:</li>
+<li>transclude:（布尔值或者字符‘element’），默认值为false；用于开启指令的内嵌机制。</li>
+<li>replace:当被设置为true时，渲染出来的HTML会替换原标签。</li>
+<li>priority:一个数字，用于设置该指令优先级，若在单个DOM上有多个指令，则优先级高的会先执行，<br>angularjs内置指令的ng-repeat的优先级为1000，ng-init的优先级为450。不常用。</li>
+<li>terminal:布尔类型，若设置为true，则优先级低于此指令的其他指令则无效，不会被调用(优先级相同的还是会执行)</li>
+</ul>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/angular-1-x/" rel="tag"># angular 1.x</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/13/title/" rel="next" title="Hello World!">
+                <i class="fa fa-chevron-left"></i> Hello World!
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/usericon.png"
+               alt="Sunsc" />
+          <p class="site-author-name" itemprop="name">Sunsc</p>
+          <p class="site-description motion-element" itemprop="description">胡说八道</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/yuyue888" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#指令的形式"><span class="nav-number">1.</span> <span class="nav-text">指令的形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指令的命名"><span class="nav-number">2.</span> <span class="nav-text">指令的命名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建指令"><span class="nav-number">3.</span> <span class="nav-text">创建指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指令属性配置"><span class="nav-number">4.</span> <span class="nav-text">指令属性配置</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sunsc</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
