@@ -87,17 +87,17 @@
 
 
 
-<meta name="description" content="angular也用了大半年了，写个文章总结一下一些重要的机制吧。angular1.x版本中的一个一个重要特性就是指令（Directive）。指令功能十分强大，他的作用简单来说就是可以给HTML元素赋予特殊或自定义的行为，比如监听事件、视图模板代理等。">
+<meta name="description" content="angular也用了大半年了，写个文章总结一下一些重要的机制吧。　　angular1.x版本中的一个一个重要特性就是指令（Directive）。指令功能十分强大，他的作用简单来说就是可以给HTML元素赋予特殊或自定义的行为，比如监听事件、视图模板代理等。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="angular中的directive">
 <meta property="og:url" content="http://yoursite.com/2017/02/21/angular中的directive/index.html">
 <meta property="og:site_name" content="Yuyue">
-<meta property="og:description" content="angular也用了大半年了，写个文章总结一下一些重要的机制吧。angular1.x版本中的一个一个重要特性就是指令（Directive）。指令功能十分强大，他的作用简单来说就是可以给HTML元素赋予特殊或自定义的行为，比如监听事件、视图模板代理等。">
+<meta property="og:description" content="angular也用了大半年了，写个文章总结一下一些重要的机制吧。　　angular1.x版本中的一个一个重要特性就是指令（Directive）。指令功能十分强大，他的作用简单来说就是可以给HTML元素赋予特殊或自定义的行为，比如监听事件、视图模板代理等。">
 <meta property="og:image" content="http://yoursite.com/2017/02/21/angular中的directive/19.jpg">
-<meta property="og:updated_time" content="2017-02-21T16:12:08.638Z">
+<meta property="og:updated_time" content="2017-02-22T15:13:43.794Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="angular中的directive">
-<meta name="twitter:description" content="angular也用了大半年了，写个文章总结一下一些重要的机制吧。angular1.x版本中的一个一个重要特性就是指令（Directive）。指令功能十分强大，他的作用简单来说就是可以给HTML元素赋予特殊或自定义的行为，比如监听事件、视图模板代理等。">
+<meta name="twitter:description" content="angular也用了大半年了，写个文章总结一下一些重要的机制吧。　　angular1.x版本中的一个一个重要特性就是指令（Directive）。指令功能十分强大，他的作用简单来说就是可以给HTML元素赋予特殊或自定义的行为，比如监听事件、视图模板代理等。">
 <meta name="twitter:image" content="http://yoursite.com/2017/02/21/angular中的directive/19.jpg">
 
 
@@ -172,7 +172,7 @@
     </a>
   </div>
     
-      <p class="site-subtitle"></p>
+      <p class="site-subtitle">胡说八道</p>
     
 </div>
 
@@ -197,6 +197,16 @@
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
             首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
           </a>
         </li>
       
@@ -299,6 +309,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/angular-1-x/" itemprop="url" rel="index">
+                    <span itemprop="name">angular 1.x</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -324,46 +356,66 @@
       
 
       
-        <p>angular也用了大半年了，写个文章总结一下一些重要的机制吧。<br>angular1.x版本中的一个一个重要特性就是指令（Directive）。指令功能十分强大，他的作用简单来说就是<br>可以给HTML元素赋予特殊或自定义的行为，比如监听事件、视图模板代理等。<br><img src="/2017/02/21/angular中的directive/19.jpg" alt="19.jpg" title=""><br><a id="more"></a></p>
-<h3 id="指令的形式"><a href="#指令的形式" class="headerlink" title="指令的形式"></a>指令的形式</h3><p>在AngularJS中，指令有四种表现形式：  </p>
+        <p>　　angular也用了大半年了，写个文章总结一下一些重要的机制吧。<br>　　angular1.x版本中的一个一个重要特性就是指令（Directive）。指令功能十分强大，他的作用简单来说就是可以给HTML元素赋予特殊或自定义的行为，比如监听事件、视图模板代理等。<br><img src="/2017/02/21/angular中的directive/19.jpg" alt="19.jpg" title=""><br><a id="more"></a></p>
+<h2 id="指令的形式"><a href="#指令的形式" class="headerlink" title="指令的形式"></a>指令的形式</h2><p>在AngularJS中，指令有四种表现形式： </p>
 <ul>
 <li>E(元素)：<code>&lt;directiveName&gt;&lt;/directiveName&gt;</code></li>
 <li>A(属性)：<code>&lt;div directiveName=&#39;expression&#39;&gt;&lt;/div&gt;</code></li>
 <li>C(类)：<code>&lt;div class=&#39;directiveName&#39;&gt;&lt;/div&gt;</code></li>
 <li>M(注释)：<code>&lt;--directive:directiveName expression--&gt;</code></li>
 </ul>
-<p>可以在创建指令时通过设置restrict属性来定义指令的形式，一个指令可以同时有多种表现形式，<br>默认值为A。</p>
-<h3 id="指令的命名"><a href="#指令的命名" class="headerlink" title="指令的命名"></a>指令的命名</h3><p>一般情况下在定义指令时推荐使用驼峰命名法，比如ngModel、ngApp，<br>但是在HTML中大小写是不敏感的，所以在HTML中使用指令时推荐使用小写字母加破折号的形式，<br>比如<code>ng-model</code>、<code>ng-app</code>。<br>除了使用小写破折号这种方式，还有以下几种使用写法<del>比较少用</del>：  </p>
+<p>可以在创建指令时通过设置restrict属性来定义指令的形式，一个指令可以同时有多种表现形式，默认值为A。</p>
+<h2 id="指令的命名"><a href="#指令的命名" class="headerlink" title="指令的命名"></a>指令的命名</h2><p>一般情况下在定义指令时推荐使用驼峰命名法，比如ngModel、ngApp，但是在HTML中大小写是不敏感的，所以在HTML中使用指令时推荐使用小写字母加破折号的形式，比如<code>ng-model</code>、<code>ng-app</code>。<br>除了使用小写破折号这种方式，还有以下几种使用写法<del>比较少用</del>：  </p>
 <ul>
 <li>ng:model </li>
 <li>ng_model </li>
 <li>data-ng-bind </li>
 <li>x-ng-bind</li>
 </ul>
-<h3 id="创建指令"><a href="#创建指令" class="headerlink" title="创建指令"></a>创建指令</h3><p>指令也是通过AngularJS的Model创建的，<br>使用<code>directive(name, directiveFactory)</code>方法创建指令，第一个参数是指令名称，<br>第二个参数是一个工厂函数，该函数需要返回一个对象，<br>通过配置该对象中的不同属性从而令AngularJS内置的$compile服务实现指令的不同功能。<br>下面是一个创建指令的简单demo( <a href="https://github.com/johnpapa/angular-styleguide/blob/master/a1/i18n/zh-CN.md#directives和controlleras" target="_blank" rel="external">来源</a> )</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">angular</div><div class="line">    .module(&apos;app&apos;)</div><div class="line">    .directive(&apos;myExample&apos;, myExample);</div><div class="line"></div><div class="line">function myExample() &#123;</div><div class="line">    var directive = &#123;</div><div class="line">        restrict: &apos;EA&apos;,</div><div class="line">        templateUrl: &apos;app/feature/example.directive.html&apos;,</div><div class="line">        scope: &#123;</div><div class="line">            max: &apos;=&apos;</div><div class="line">        &#125;,</div><div class="line">        link: linkFunc,</div><div class="line">        controller : ExampleController,</div><div class="line">        controllerAs: &apos;vm&apos;,</div><div class="line">        bindToController: true // because the scope is isolated</div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    return directive;</div><div class="line"></div><div class="line">    function linkFunc(scope, el, attr, ctrl) &#123;</div><div class="line">        console.log(&apos;LINK: scope.min = %s *** should be undefined&apos;, scope.min);</div><div class="line">        console.log(&apos;LINK: scope.max = %s *** should be undefined&apos;, scope.max);</div><div class="line">        console.log(&apos;LINK: scope.vm.min = %s&apos;, scope.vm.min);</div><div class="line">        console.log(&apos;LINK: scope.vm.max = %s&apos;, scope.vm.max);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">ExampleController.$inject = [&apos;$scope&apos;];</div><div class="line">function ExampleController($scope) &#123;</div><div class="line">    // Injecting $scope just for comparison</div><div class="line">    var vm = this;</div><div class="line"></div><div class="line">    vm.min = 3;</div><div class="line"></div><div class="line">    console.log(&apos;CTRL: $scope.vm.min = %s&apos;, $scope.vm.min);</div><div class="line">    console.log(&apos;CTRL: $scope.vm.max = %s&apos;, $scope.vm.max);</div><div class="line">    console.log(&apos;CTRL: vm.min = %s&apos;, vm.min);</div><div class="line">    console.log(&apos;CTRL: vm.max = %s&apos;, vm.max);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="创建指令"><a href="#创建指令" class="headerlink" title="创建指令"></a>创建指令</h2><p>指令也是通过AngularJS的Model创建的，使用<code>directive(name, directiveFactory)</code>方法创建指令，第一个参数是指令名称，第二个参数是一个工厂函数，该函数需要返回一个对象，通过配置该对象中的不同属性从而令AngularJS内置的$compile服务实现指令的不同功能。<br>下面是一个创建指令的简单demo( <a href="https://github.com/johnpapa/angular-styleguide/blob/master/a1/i18n/zh-CN.md#directives和controlleras" target="_blank" rel="external">来源</a> )</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">angular</div><div class="line">    .module(<span class="string">'app'</span>)</div><div class="line">    .directive(<span class="string">'myExample'</span>, myExample);</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">myExample</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> directive = &#123;</div><div class="line">        <span class="attr">restrict</span>: <span class="string">'EA'</span>,</div><div class="line">        <span class="attr">templateUrl</span>: <span class="string">'app/feature/example.directive.html'</span>,</div><div class="line">        <span class="attr">scope</span>: &#123;</div><div class="line">            <span class="attr">max</span>: <span class="string">'='</span></div><div class="line">        &#125;,</div><div class="line">        <span class="attr">link</span>: linkFunc,</div><div class="line">        <span class="attr">controller</span> : ExampleController,</div><div class="line">        <span class="attr">controllerAs</span>: <span class="string">'vm'</span>,</div><div class="line">        <span class="attr">bindToController</span>: <span class="literal">true</span> <span class="comment">// because the scope is isolated</span></div><div class="line">    &#125;;</div><div class="line"></div><div class="line">    <span class="keyword">return</span> directive;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">linkFunc</span>(<span class="params">scope, el, attr, ctrl</span>) </span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'LINK: scope.min = %s *** should be undefined'</span>, scope.min);</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'LINK: scope.max = %s *** should be undefined'</span>, scope.max);</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'LINK: scope.vm.min = %s'</span>, scope.vm.min);</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'LINK: scope.vm.max = %s'</span>, scope.vm.max);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">ExampleController.$inject = [<span class="string">'$scope'</span>];</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">ExampleController</span>(<span class="params">$scope</span>) </span>&#123;</div><div class="line">    <span class="comment">// Injecting $scope just for comparison</span></div><div class="line">    <span class="keyword">var</span> vm = <span class="keyword">this</span>;</div><div class="line"></div><div class="line">    vm.min = <span class="number">3</span>;</div><div class="line"></div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'CTRL: $scope.vm.min = %s'</span>, $scope.vm.min);</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'CTRL: $scope.vm.max = %s'</span>, $scope.vm.max);</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'CTRL: vm.min = %s'</span>, vm.min);</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'CTRL: vm.max = %s'</span>, vm.max);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">&lt;!-- example.directive.html --&gt;</div><div class="line">   &lt;div&gt;hello world&lt;/div&gt;</div><div class="line">   &lt;div&gt;max=&#123;&#123;vm.max&#125;&#125;&lt;input ng-model=&quot;&#123;&#123;vm.max&#125;&#125;&quot;/&gt;&lt;/div&gt;</div><div class="line">   &lt;div&gt;min=&#123;&#123;vm.min&#125;&#125;&lt;input ng-model=&quot;&#123;&#123;vm.min&#125;&#125;&quot;/&gt;&lt;/div&gt;</div></pre></td></tr></table></figure>
 <p>在HTML页面中使用：<br><code>&lt;div my-example max=&quot;77&quot;&gt;&lt;/div&gt;</code></p>
-<h3 id="指令属性配置"><a href="#指令属性配置" class="headerlink" title="指令属性配置"></a>指令属性配置</h3><p>下面详细介绍各个可配置的属性：</p>
+<h2 id="指令属性配置"><a href="#指令属性配置" class="headerlink" title="指令属性配置"></a>指令属性配置</h2><p>下面详细介绍各个可配置的属性：</p>
+<h3 id="restrict"><a href="#restrict" class="headerlink" title="restrict"></a>restrict</h3><p>上文已经介绍了指令的四种形式，restrict属性用于指定指令的形式,一个指令可以存在多种形式.例如<code>restrict：&#39;EA&#39;</code>则表示指令在DOM里面可用元素形式和属性形式被声明,如果想支持IE8，最好使用属性和类形式来定义。</p>
+<h3 id="template"><a href="#template" class="headerlink" title="template:"></a>template:</h3><p>指定一个内嵌模板，可以使字符串（一段HTML文本）或者函数。当为函数时，可接受两个参数tElement和tAttrs。第一个参数代表当前的HTML DOM元素，而第二个参数为实例的属性，它是一个由元素上所有的属性组成的集合（对象）</p>
+<h3 id="templateUrl"><a href="#templateUrl" class="headerlink" title="templateUrl"></a>templateUrl</h3><p>指定模板加载的URL,当已经设置template时不会生效。<br>由于加载html模板是通过异步加载的，若加载大量的模板会拖慢网站的速度。<br>可以通过先缓存模板来加快加载模板的速度。<br>当模板很多时，可以通过给模板指令设置相关属性，从而动态的加载UI模板文件：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">	// modules.js</div><div class="line">var mainModule = angular.module(&quot;mainModule&quot;, []);</div><div class="line">	mainModule.controller(&quot;MyController&quot;, function() &#123;</div><div class="line">  this.name = &quot;Jason&quot;;</div><div class="line">  this.job = &quot;Developer&quot;;</div><div class="line">&#125;);</div><div class="line">	mainModule.directive(&quot;myDirective&quot;, function() &#123;</div><div class="line">  return &#123;</div><div class="line">    templateUrl: function(elem, attr) &#123;</div><div class="line">      return &quot;myTemplate-&quot; + attr.type + &quot;.html&quot;;</div><div class="line">    &#125;</div><div class="line">  &#125;;</div><div class="line">&#125;);</div><div class="line">	&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">  &lt;head&gt;</div><div class="line">    &lt;meta charset=&quot;utf-8&quot;&gt;</div><div class="line">    &lt;title&gt;Demo for Directive&lt;/title&gt;</div><div class="line">    &lt;script src=&quot;../angular-1.5.8.js&quot;&gt;&lt;/script&gt;</div><div class="line">    &lt;script src=&quot;modules.js&quot;&gt;&lt;/script&gt;</div><div class="line">  &lt;/head&gt;</div><div class="line">  &lt;body ng-app=&quot;mainModule&quot;&gt;</div><div class="line">    &lt;div ng-controller=&quot;MyController as mc&quot;&gt;</div><div class="line">      &lt;my-directive type=&quot;name&quot;&gt;&lt;/my-directive&gt;</div><div class="line">      &lt;my-directive type=&quot;job&quot;&gt;&lt;/my-directive&gt;</div><div class="line">      &lt;!-- &lt;div my-directive type=&quot;name&quot;&gt;&lt;/div&gt; --&gt;</div><div class="line">      &lt;!-- &lt;div my-directive type=&quot;job&quot;&gt;&lt;/div&gt; --&gt;</div><div class="line">    &lt;/div&gt;</div><div class="line">  &lt;/body&gt;</div><div class="line">&lt;/html&gt;</div><div class="line">	&lt;!-- myTemplate-name.html --&gt;</div><div class="line">Name: &#123;&#123;mc.name&#125;&#125;</div><div class="line">	&lt;!-- myTemplate-job.html --&gt;</div><div class="line">Job: &#123;&#123;mc.job&#125;&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="scope"><a href="#scope" class="headerlink" title="scope"></a>scope</h3><p>该属性用于配置指令的作用域。关于AngularJS作用域的详细说明可以参考 <a href="http://www.angularjs.cn/A09C" target="_blank" rel="external">AngularJS作用域Scope的继承</a>  </p>
+<ol>
+<li>默认值false：表示继承父作用域;<br>除非该directive与html不存在数据绑定，一般情况下建议使用后几种方式。</li>
+<li>true：表示继承父作用域，并创建自己的作用域（子作用域）;<br>directive创建一个子作用域, 并且会从父作用域进行原型继承。<br>如果同一个DOM element存在多个directives要求创建子作用域，那么只有一个子作用域被创建，多个directives将共用该子作用域。</li>
+<li>{}：表示创建一个全新的隔离（Isolate）作用域，没有原型继承。<br>这是创建可复用directive组件的最佳选择。因为它不会直接访问/修改父作用域的属性，不会产生意外的副作用。这种directive与父作用域进行数据通信有如下几种方式，如果绑定的隔离作用域属性名与元素的属性名相同，则可以采取缺省写法(前)。<ol>
+<li><strong>= or =attr</strong> “Isolate”作用域的属性与父作用域的属性进行<strong>双向绑定</strong>，<br>任何一方的修改均影响到对方，这是最常用的方式；</li>
+<li><strong>@ or @attr</strong> “Isolate”作用域的属性与父作用域的属性进行<strong>单向绑定</strong>，<br>即“Isolate”作用域只能读取父作用域的值，并且该值<strong>永远的String类型</strong>；<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"> </div><div class="line">app.controller(<span class="string">'MainController'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;);</div><div class="line">     app.directive(<span class="string">'helloWorld'</span>,<span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">      <span class="keyword">return</span> &#123;</div><div class="line">         <span class="attr">scope</span>: &#123;<span class="attr">color</span>:<span class="string">'@colorAttr'</span>&#125;,  <span class="comment">//指明了隔离作用域中的属性color应该绑定到属性colorAttr</span></div><div class="line">         restrict: <span class="string">'AE'</span>,</div><div class="line">         <span class="attr">replace</span>: <span class="literal">true</span>,</div><div class="line">         <span class="attr">template</span>: <span class="string">'&lt;p style="background-color:"&gt;Hello World&lt;/p&gt;'</span>      </div><div class="line">      &#125;</div><div class="line">     &#125;);</div></pre></td></tr></table></figure>
+<code>&lt;hello-world color-attr=&#39;&#39;&gt;&lt;/hello-world&gt;</code>  </li>
+<li><strong>&amp; or &amp;attr</strong> “Isolate”作用域把父作用域的属性包装成一个函数，可用于调用父作用域的函数，包装方法是$parse，详情请见 <a href="http://docs.angularjs.org/api/ng.$parse" target="_blank" rel="external">API-$parse</a> ；<br>“Isolate”作用域的<strong>proto</strong>是一个标准Scope object (the picture below needs to be updated to show an orange ‘Scope’ object instead of an ‘Object’.)“Isolate”作用域的$parent同样指向父作用域。它虽然没有原型继承，但它仍然是一个子作用域。<br>如下directive：<br><code>&lt;my-directive interpolated=&quot;&quot; twowayBinding=&quot;parentProp2&quot;&gt;</code><br><code>scope: { interpolatedProp: &#39;@interpolated&#39;, twowayBindingProp: &#39;=twowayBinding&#39; }</code><br>link函数中：<br><code>scope.someIsolateProp = &quot;I&#39;m isolated&quot;</code><br>请注意，我们在link函数中使用attrs.$observe(‘interpolated’, function(value) { … }来监测@属性的变化。<br>更多请参考 <a href="http://onehungrymind.com/angularjs-sticky-notes-pt-2-isolated-scope/" target="_blank" rel="external">这里</a> </li>
+</ol>
+</li>
+</ol>
+<h3 id="transclude"><a href="#transclude" class="headerlink" title="transclude"></a>transclude</h3><p>（布尔值或者字符‘element’），默认值为false；用于设置是否开启指令的内嵌机制。<br>如果为true，directive会新建一个“transcluded”子作用域，并且会从父作用域进行原型继承。<br>指令标签之间的内容可以被指定嵌入UI模板中被ng-transclude内置指令标记过的DOM元素中。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">&lt;body&gt;</div><div class="line">  &lt;div ng-controller=&apos;MainController&apos;&gt;</div><div class="line">     </div><div class="line">          &lt;hello-world&gt;</div><div class="line">            &#123;&#123;name&#125;&#125;</div><div class="line">          &lt;/hello-world&gt;</div><div class="line">       </div><div class="line">  &lt;/div&gt;</div><div class="line">  &lt;script&gt;</div><div class="line">    var app = angular.module(&apos;myApp&apos;,[]);</div><div class="line">    app.controller(&apos;MainController&apos;,function($scope)&#123;</div><div class="line">      $scope.name = &apos;hehe&apos;;</div><div class="line">    &#125;);</div><div class="line">    app.directive(&apos;helloWorld&apos;,function()&#123;</div><div class="line">     return &#123;</div><div class="line">        scope:&#123;&#125;,  </div><div class="line">        restrict: &apos;AE&apos;,</div><div class="line">        transclude: true,</div><div class="line">        template: &apos;&lt;div class=&quot;b&quot;&gt;&lt;div ng-transclude&gt;你看不见我&lt;/div&gt;&lt;/div&gt;&apos;</div><div class="line">     &#125;</div><div class="line">    &#125;);</div><div class="line">  &lt;/script&gt;</div><div class="line">&lt;/body&gt;</div></pre></td></tr></table></figure>
+<p>生成html时可以发现文本“你看不见我”被transclude内容替换掉了。</p>
+<p>‘element’与true的区别？<br>当transclude：true时候，嵌入的内容为<code></code>，而当transclude：“element”时候，嵌入的内容为<code>&lt;hello-world&gt;&lt;/hello-world&gt;</code>。需要注意的是，当transclude设置为‘element’时，指令的repalce属性需要设置为true，详见 <a href="https://github.com/angular/angular.js/issues/3368" target="_blank" rel="external">这里</a> 。</p>
+<h3 id="replace"><a href="#replace" class="headerlink" title="replace"></a>replace</h3><p>当被设置为true时，渲染出来的HTML会替换原标签。</p>
+<h3 id="priority"><a href="#priority" class="headerlink" title="priority"></a>priority</h3><p>一个数字，用于设置该指令优先级，若在单个DOM上有多个指令，则优先级高的会先执行，<br>angularjs内置指令的ng-repeat的优先级为1000，ng-init的优先级为450。不常用。</p>
+<h3 id="terminal"><a href="#terminal" class="headerlink" title="terminal"></a>terminal</h3><p>布尔类型，若设置为true，则优先级低于此指令的其他指令则无效，不会被调用(优先级相同的还是会执行)</p>
+<h3 id="controller"><a href="#controller" class="headerlink" title="controller"></a>controller</h3><p>可以是一个字符串或者函数。若是为字符串，则将字符串当做是控制器的名字，来查找注册在应用中的控制器的构造函数。<br>和在Module中创建Controller很类似，可以在参数中注入需要的AngularJS服务，和Module中的Controller相比，指令中的Controller有一些特殊的服务（参数）可以注入<br>（1）$scope，与指令元素相关联的作用域<br>（2）$element，当前指令对应的元素<br>（3）$attrs，由当前元素的属性组成的对象<br>（4）$transclude，嵌入链接函数，实际被执行用来克隆元素和操作DOM的函数（不建议写在Controller中，DOM操作最好写在link中）<br>controller和后面会介绍到的link函数非常相似，但其实两者职能不同。</p>
+<h3 id="controllerAs"><a href="#controllerAs" class="headerlink" title="controllerAs"></a>controllerAs</h3><p>指定Controller的名称。</p>
+<h3 id="bindToController"><a href="#bindToController" class="headerlink" title="bindToController"></a>bindToController</h3><h3 id="require"><a href="#require" class="headerlink" title="require"></a>require</h3><p>字符串或者数组。<br>指令之间的交互主要是以指令的Controller为桥梁来实现的，这里的交互指的是子指令与父指令之间的交互，我们可以使用指令的require属性设置要引用的父指令的Controller，<br>这里有几种配置方式：   </p>
 <ul>
-<li>restrict:指令的形式,例如<code>restrict：&#39;EA&#39;</code>则表示指令在DOM里面可用元素形式和属性形式被声明,<br>如果想支持IE8，最好使用属性和类形式来定义。</li>
-<li>template:指定一个内嵌模板，可以使字符串（一段HTML文本）或者函数。当为函数时，<br>可接受两个参数tElement和tAttrs。第一个参数代表当前的HTML DOM元素，<br>而第二个参数为实例的属性，它是一个由元素上所有的属性组成的集合（对象）</li>
-<li>templateUrl:指定模板加载的URL,当已经设置template时不会生效。<br>由于加载html模板是通过异步加载的，若加载大量的模板会拖慢网站的速度。<br>可以通过先缓存模板来加快加载模板的速度。</li>
-<li>scope:（1）默认值false。<pre><code>表示继承父作用域;
-（2）true
-表示继承父作用域，并创建自己的作用域（子作用域）;
-（3）{}
-表示创建一个全新的隔离作用域；关于scope会在下一节继续说明。
-</code></pre></li>
-<li>link:</li>
-<li>controller:</li>
-<li>controllerAs:</li>
-<li>bindToController:</li>
-<li>transclude:（布尔值或者字符‘element’），默认值为false；用于开启指令的内嵌机制。</li>
-<li>replace:当被设置为true时，渲染出来的HTML会替换原标签。</li>
-<li>priority:一个数字，用于设置该指令优先级，若在单个DOM上有多个指令，则优先级高的会先执行，<br>angularjs内置指令的ng-repeat的优先级为1000，ng-init的优先级为450。不常用。</li>
-<li>terminal:布尔类型，若设置为true，则优先级低于此指令的其他指令则无效，不会被调用(优先级相同的还是会执行)</li>
+<li><code>require: &quot;controllerName&quot;</code>：只查找指令自己的Controller,如果找不到任何控制器，则会抛出一个error。  </li>
+<li><code>require: &quot;?controllerName&quot;</code>：只查找指令自己的Controller,如果找不到任何控制器，则会将null传给link连接函数的第四个参数。  </li>
+<li><code>require: &quot;^controllerName&quot;</code>：查找指令自己的Controller以及父指令的Controller。  </li>
+<li><code>require: &quot;^^controllerName&quot;</code>：只查找父指令的Controller。   </li>
+<li><code>require: [&quot;^controllerName1&quot;, &quot;^controllerName2&quot;]</code>：引用多个Controller。  </li>
 </ul>
+<h3 id="link"><a href="#link" class="headerlink" title="link"></a>link</h3><p>link函数主要用来为DOM元素添加事件监听、监视模型属性变化、以及更新DOM。会晚于controller函数执行。<br>该函数共有五个参数：  </p>
+<pre><code>- scope：指令的作用域，默认是父节点Controller的作用域，如果指令有创建自己的作用域，那么则指指令自己的作用域。  
+- element：指令的jQLite(jQuery的子集)包装的DOM元素，可以通过该参数操作指令所在的DOM元素。   
+- attrs：指令所在DOM元素的属性对象，通过.语法可以获取到给DOM元素添加的属性。   
+- controller：指令通过require属性引用的Controller实例。   
+- transcludeFn：嵌入函数。  
+</code></pre><p> 通过指令操作DOM元素：<br> <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">	<span class="keyword">var</span> mainModule = angular.module(<span class="string">"mainModule"</span>, []);</div><div class="line">	mainModule.directive(<span class="string">"myDirective"</span>, <span class="function"><span class="keyword">function</span>(<span class="params">$interval</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    <span class="attr">restrict</span>: <span class="string">"A"</span>,</div><div class="line">    <span class="attr">link</span>: <span class="function"><span class="keyword">function</span>(<span class="params">scope, element, attrs</span>) </span>&#123;</div><div class="line">      $interval(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        element.text(<span class="keyword">new</span> <span class="built_in">Date</span>());</div><div class="line">      &#125;, <span class="number">1000</span>);</div><div class="line">    &#125;</div><div class="line">  &#125;;</div><div class="line">&#125;);</div></pre></td></tr></table></figure><br> <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">	&lt;!DOCTYPE html&gt;</div><div class="line">&lt;html&gt;</div><div class="line">  &lt;head&gt;</div><div class="line">    &lt;meta charset=&quot;utf-8&quot;&gt;</div><div class="line">    &lt;title&gt;Demo for Directive&lt;/title&gt;</div><div class="line">    &lt;script src=&quot;../angular-1.5.8.js&quot;&gt;&lt;/script&gt;</div><div class="line">    &lt;script src=&quot;modules.js&quot;&gt;&lt;/script&gt;</div><div class="line">  &lt;/head&gt;</div><div class="line">  &lt;body ng-app=&quot;mainModule&quot;&gt;</div><div class="line">    &lt;div&gt;</div><div class="line">      Current Date is: &lt;span my-directive&gt;&lt;/span&gt;</div><div class="line">    &lt;/div&gt;</div><div class="line">  &lt;/body&gt;</div><div class="line">&lt;/html&gt;</div></pre></td></tr></table></figure></p>
 
       
     </div>
@@ -471,7 +523,7 @@
                src="/uploads/usericon.png"
                alt="Sunsc" />
           <p class="site-author-name" itemprop="name">Sunsc</p>
-          <p class="site-description motion-element" itemprop="description">胡说八道</p>
+          <p class="site-description motion-element" itemprop="description">Java 程序员 , web开发</p>
         </div>
         <nav class="site-state motion-element">
         
@@ -484,6 +536,13 @@
             </div>
           
 
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
           
 
           
@@ -535,7 +594,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#指令的形式"><span class="nav-number">1.</span> <span class="nav-text">指令的形式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指令的命名"><span class="nav-number">2.</span> <span class="nav-text">指令的命名</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#创建指令"><span class="nav-number">3.</span> <span class="nav-text">创建指令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#指令属性配置"><span class="nav-number">4.</span> <span class="nav-text">指令属性配置</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#指令的形式"><span class="nav-number">1.</span> <span class="nav-text">指令的形式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指令的命名"><span class="nav-number">2.</span> <span class="nav-text">指令的命名</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建指令"><span class="nav-number">3.</span> <span class="nav-text">创建指令</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#指令属性配置"><span class="nav-number">4.</span> <span class="nav-text">指令属性配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#restrict"><span class="nav-number">4.1.</span> <span class="nav-text">restrict</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#template"><span class="nav-number">4.2.</span> <span class="nav-text">template:</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#templateUrl"><span class="nav-number">4.3.</span> <span class="nav-text">templateUrl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#scope"><span class="nav-number">4.4.</span> <span class="nav-text">scope</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#transclude"><span class="nav-number">4.5.</span> <span class="nav-text">transclude</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#replace"><span class="nav-number">4.6.</span> <span class="nav-text">replace</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#priority"><span class="nav-number">4.7.</span> <span class="nav-text">priority</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#terminal"><span class="nav-number">4.8.</span> <span class="nav-text">terminal</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#controller"><span class="nav-number">4.9.</span> <span class="nav-text">controller</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#controllerAs"><span class="nav-number">4.10.</span> <span class="nav-text">controllerAs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#bindToController"><span class="nav-number">4.11.</span> <span class="nav-text">bindToController</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#require"><span class="nav-number">4.12.</span> <span class="nav-text">require</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#link"><span class="nav-number">4.13.</span> <span class="nav-text">link</span></a></li></ol></li></ol></div>
             
 
           </div>
