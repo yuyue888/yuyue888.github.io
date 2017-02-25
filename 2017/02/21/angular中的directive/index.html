@@ -94,7 +94,7 @@
 <meta property="og:site_name" content="Yuyue">
 <meta property="og:description" content="angular也用了大半年了，写个文章总结一下一些重要的机制吧。　　angular1.x版本中的一个一个重要特性就是指令（Directive）。指令功能十分强大，他的作用简单来说就是可以给HTML元素赋予特殊或自定义的行为，比如监听事件、视图模板代理等。">
 <meta property="og:image" content="http://yoursite.com/2017/02/21/angular中的directive/19.jpg">
-<meta property="og:updated_time" content="2017-02-22T15:13:43.794Z">
+<meta property="og:updated_time" content="2017-02-25T16:29:14.396Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="angular中的directive">
 <meta name="twitter:description" content="angular也用了大半年了，写个文章总结一下一些重要的机制吧。　　angular1.x版本中的一个一个重要特性就是指令（Directive）。指令功能十分强大，他的作用简单来说就是可以给HTML元素赋予特殊或自定义的行为，比如监听事件、视图模板代理等。">
@@ -364,7 +364,7 @@
 <li>C(类)：<code>&lt;div class=&#39;directiveName&#39;&gt;&lt;/div&gt;</code></li>
 <li>M(注释)：<code>&lt;--directive:directiveName expression--&gt;</code></li>
 </ul>
-<p>可以在创建指令时通过设置restrict属性来定义指令的形式，一个指令可以同时有多种表现形式，默认值为A。</p>
+<p>可以在创建指令时通过设置restrict属性来定义指令的形式，一个指令可以同时有多种表现形式，Angular 1.3 +默认使用EA。</p>
 <h2 id="指令的命名"><a href="#指令的命名" class="headerlink" title="指令的命名"></a>指令的命名</h2><p>一般情况下在定义指令时推荐使用驼峰命名法，比如ngModel、ngApp，但是在HTML中大小写是不敏感的，所以在HTML中使用指令时推荐使用小写字母加破折号的形式，比如<code>ng-model</code>、<code>ng-app</code>。<br>除了使用小写破折号这种方式，还有以下几种使用写法<del>比较少用</del>：  </p>
 <ul>
 <li>ng:model </li>
@@ -400,8 +400,9 @@
 <h3 id="priority"><a href="#priority" class="headerlink" title="priority"></a>priority</h3><p>一个数字，用于设置该指令优先级，若在单个DOM上有多个指令，则优先级高的会先执行，<br>angularjs内置指令的ng-repeat的优先级为1000，ng-init的优先级为450。不常用。</p>
 <h3 id="terminal"><a href="#terminal" class="headerlink" title="terminal"></a>terminal</h3><p>布尔类型，若设置为true，则优先级低于此指令的其他指令则无效，不会被调用(优先级相同的还是会执行)</p>
 <h3 id="controller"><a href="#controller" class="headerlink" title="controller"></a>controller</h3><p>可以是一个字符串或者函数。若是为字符串，则将字符串当做是控制器的名字，来查找注册在应用中的控制器的构造函数。<br>和在Module中创建Controller很类似，可以在参数中注入需要的AngularJS服务，和Module中的Controller相比，指令中的Controller有一些特殊的服务（参数）可以注入<br>（1）$scope，与指令元素相关联的作用域<br>（2）$element，当前指令对应的元素<br>（3）$attrs，由当前元素的属性组成的对象<br>（4）$transclude，嵌入链接函数，实际被执行用来克隆元素和操作DOM的函数（不建议写在Controller中，DOM操作最好写在link中）<br>controller和后面会介绍到的link函数非常相似，但其实两者职能不同。</p>
-<h3 id="controllerAs"><a href="#controllerAs" class="headerlink" title="controllerAs"></a>controllerAs</h3><p>指定Controller的名称。</p>
-<h3 id="bindToController"><a href="#bindToController" class="headerlink" title="bindToController"></a>bindToController</h3><h3 id="require"><a href="#require" class="headerlink" title="require"></a>require</h3><p>字符串或者数组。<br>指令之间的交互主要是以指令的Controller为桥梁来实现的，这里的交互指的是子指令与父指令之间的交互，我们可以使用指令的require属性设置要引用的父指令的Controller，<br>这里有几种配置方式：   </p>
+<h3 id="controllerAs"><a href="#controllerAs" class="headerlink" title="controllerAs"></a>controllerAs</h3><p>指定Controller的名称,和view使用controller as保持一致,注意：当你把controller注入到link的函数或可访问的directive的attributes时，你可以把它命名为控制器的属性。<br><code>function linkFunc(scope, el, attr, vm) //把vm直接传递进来</code></p>
+<h3 id="bindToController"><a href="#bindToController" class="headerlink" title="bindToController"></a>bindToController</h3><p>当directive中使用了controller as语法时，如果你想把父级作用域绑定到directive的controller作用域时，使用bindToController = true。这使得把外部作用域绑定到directive controller中变得更加简单。<br>注意：Angular 1.3.0才介绍了bindToController。</p>
+<h3 id="require"><a href="#require" class="headerlink" title="require"></a>require</h3><p>字符串或者数组。<br>指令之间的交互主要是以指令的Controller为桥梁来实现的，这里的交互指的是子指令与父指令之间的交互，我们可以使用指令的require属性设置要引用的父指令的Controller，<br>这里有几种配置方式：   </p>
 <ul>
 <li><code>require: &quot;controllerName&quot;</code>：只查找指令自己的Controller,如果找不到任何控制器，则会抛出一个error。  </li>
 <li><code>require: &quot;?controllerName&quot;</code>：只查找指令自己的Controller,如果找不到任何控制器，则会将null传给link连接函数的第四个参数。  </li>
