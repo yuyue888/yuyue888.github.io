@@ -1,0 +1,762 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="JPA," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="JPA支持本地查询，所谓本地查询，就是使用原生的sql语句（根据数据库的不同，在sql的语法或结构方面可能有所区别）进行查询数据库的操作。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="JPA原生查询(Native Query)">
+<meta property="og:url" content="http://yoursite.com/2017/04/23/JPA原生查询(Native Query)/index.html">
+<meta property="og:site_name" content="Yuyue">
+<meta property="og:description" content="JPA支持本地查询，所谓本地查询，就是使用原生的sql语句（根据数据库的不同，在sql的语法或结构方面可能有所区别）进行查询数据库的操作。">
+<meta property="og:updated_time" content="2017-04-23T09:06:11.145Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="JPA原生查询(Native Query)">
+<meta name="twitter:description" content="JPA支持本地查询，所谓本地查询，就是使用原生的sql语句（根据数据库的不同，在sql的语法或结构方面可能有所区别）进行查询数据库的操作。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/04/23/JPA原生查询(Native Query)/"/>
+
+
+
+
+
+  <title> JPA原生查询(Native Query) | Yuyue </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Yuyue</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle">胡说八道</p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/04/23/JPA原生查询(Native Query)/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Sunsc">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/usericon.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Yuyue">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Yuyue" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                JPA原生查询(Native Query)
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-04-23T16:18:50+08:00">
+                2017-04-23
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/JPA/" itemprop="url" rel="index">
+                    <span itemprop="name">JPA</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>JPA支持本地查询，所谓本地查询，就是使用原生的sql语句（根据数据库的不同，在sql的语法或结构方面可能有所区别）进行查询数据库的操作。<br> <a id="more"></a><br>本地查询主要使用EntityManager接口里的方法：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">EntityManager</span> </span>&#123;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">persist</span><span class="params">(Object entity)</span></span>;</div><div class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">find</span><span class="params">(Class &lt;T&gt; entityClass, Object primaryKey)</span></span>;</div><div class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">getReference</span><span class="params">(Class &lt;T&gt; entityClass, Object primaryKey)</span></span>;</div><div class="line"><span class="keyword">public</span> &lt;T&gt; <span class="function">T <span class="title">merge</span><span class="params">(T entity)</span></span>;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">remove</span><span class="params">(Object entity)</span></span>;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lock</span><span class="params">(Object entity, LockModeType lockMode)</span></span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">refresh</span><span class="params">(Object entity)</span></span>;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">contains</span><span class="params">(Object entity)</span></span>;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">clear</span><span class="params">( )</span></span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">joinTransaction</span><span class="params">( )</span></span>;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">flush</span><span class="params">( )</span></span>;</div><div class="line"><span class="function"><span class="keyword">public</span> FlushModeType <span class="title">getFlushMode</span><span class="params">( )</span></span>;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setFlushMode</span><span class="params">(FlushModeType type)</span></span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> Query <span class="title">createQuery</span><span class="params">(String queryString)</span></span>;</div><div class="line"><span class="function"><span class="keyword">public</span> Query <span class="title">createNamedQuery</span><span class="params">(String name)</span></span>;</div><div class="line"><span class="function"><span class="keyword">public</span> Query <span class="title">createNativeQuery</span><span class="params">(String sqlString)</span></span>;</div><div class="line"><span class="function"><span class="keyword">public</span> Query <span class="title">createNativeQuery</span><span class="params">(String sqlString, String resultSetMapping)</span></span>;</div><div class="line"><span class="function"><span class="keyword">public</span> Query <span class="title">createNativeQuery</span><span class="params">(String sqlString, Class resultClass)</span></span>;</div><div class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">getDelegate</span><span class="params">( )</span></span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">close</span><span class="params">( )</span></span>;</div><div class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">isOpen</span><span class="params">( )</span></span>;</div><div class="line">&#125;</div><div class="line"></div></pre></td></tr></table></figure></p>
+<p>即 createNativeQuery方法的三种形式，但用这个方法的缺点是，要将查询的sql语句及返回结果集类型传递进去。还有一种方法是使用createNamedQuery，这样就可以避免在这里直接写入sql语句以及返回的结果集类型等参数，而可以在相关的Entity类里对这些信息进行配置。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//这里只是传递进去一个string值</span></div><div class="line">Query q = em.createNamedQuery(<span class="string">"ReturnOrderListWithFullScalarType"</span>);</div><div class="line"><span class="comment">//这里是设定在sql中所需的参数</span></div><div class="line">q.setParameter(<span class="number">1</span>, customer.getId());</div><div class="line"><span class="comment">//得到结果集</span></div><div class="line">List orderList = q.getResultList();</div></pre></td></tr></table></figure><br>这个查询主要是根据用户的id 来获取他名下的所有订单。所以，在实体类 Order中，加入相关的native query annotation.<br><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">@NamedNativeQueries</div><div class="line">(</div><div class="line">    &#123;</div><div class="line">       @NamedNativeQuery(</div><div class="line">           name="ReturnOrderListWithFullScalarType",</div><div class="line">              query="select o.id as order_id,o.create_date as order_creation_date,o.description as order_description,o.sum_price as order_sum_total,</div><div class="line">		c.name as customer_name,c.ctype as customer_type,c.id as customer_id from orders o join customer c on o.cust_id=c.id where o.cust_id=?1",</div><div class="line">           resultSetMapping="ReturnOrderListWithFullScalarType"),</div><div class="line">        。。。。。。。。。。。。。可能还有更多的本地查询设置</div><div class="line">	&#125;</div><div class="line">)</div></pre></td></tr></table></figure></p>
+<p><strong>@NamedNativeQueries</strong> 如果在一个实体类中有多个NamedNativeQuery的话，必须使用该批注，并且将单个的NamedNativeQuery都作为NamedNativeQueries数组中的一个元素。<br><strong>@NamedNativeQuery</strong>，在这里设置关于该本地查询的信息。name表示传递进EntityManager.createNamedQuery(“name”)的参数，query表示实施本地查询的sql语句，resultSetMapping表示返回结果集的映射方式。它的意思就是结果集将以哪种形式来保存。</p>
+<p>接着，就要设置这个结果集的映射方式了。</p>
+<h3 id="一、简单映射"><a href="#一、简单映射" class="headerlink" title="一、简单映射"></a>一、简单映射</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@SqlResultSetMappings</span>(</div><div class="line">&#123;</div><div class="line">    <span class="meta">@SqlResultSetMapping</span></div><div class="line">    (</div><div class="line">       name=<span class="string">"ReturnOrderListWithFullScalarType"</span>,</div><div class="line">       entities=&#123;&#125;,</div><div class="line">       columns=</div><div class="line">       &#123;</div><div class="line">           <span class="meta">@ColumnResult</span>(name=<span class="string">"order_id"</span>),</div><div class="line">           <span class="meta">@ColumnResult</span>(name=<span class="string">"order_creation_date"</span>),</div><div class="line">           <span class="meta">@ColumnResult</span>(name=<span class="string">"order_description"</span>),</div><div class="line">           <span class="meta">@ColumnResult</span>(name=<span class="string">"order_sum_total"</span>),</div><div class="line">           <span class="meta">@ColumnResult</span>(name=<span class="string">"customer_id"</span>),</div><div class="line">           <span class="meta">@ColumnResult</span>(name=<span class="string">"customer_name"</span>)</div><div class="line">       &#125;</div><div class="line">    ),</div><div class="line">       。。。。。。。。。。。。。可能还有更多的结果集映射设置</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>针对每一个本地查询的返回值，都有一个结果集和它映射。它可以返回</p>
+<ol>
+<li>实体（包括不同类型的实体，即多个实体） Entity</li>
+<li>标量值 Scalar</li>
+<li>实体与标量值的组合 Entity+Scalar</li>
+</ol>
+<p>默认情况下，JPA假设原生sql查询中select语句将会：</p>
+<ol>
+<li>返回一个实体类型</li>
+<li>包含与返回的实体的所有字段或属性相对应的所有列，即列名和实体属性/字段名一样</li>
+<li>查询中没有用列名别名，column alias，即没有用 AS 指定别名</li>
+</ol>
+<p><strong>@SqlResultSetMappings</strong>，如果在一个实体类中有多个@NamedNativeQuery的话，必然就有多个结果集映射@SqlResultSetMapping。在这种情况下，必须使用该批注，并且将单个的SqlResultSetMapping都作为SqlResultSetMappings数组中的一个元素。<br><strong>@SqlResultSetMapping</strong>，关于结果集映射的详细信息。<br><strong>name</strong> 表示该结果集映射的名字，与@NamedNativeQuery中的resultSetMapping=”ReturnOrderListWithFullScalarType”的值相对应。<br><strong>entities</strong>表示查询结果集会被映射进实体，如果有就要将所有返回的实体一一列出（这里我们将结果集全部映射进标量，所以entities属性是个空数组）。<br><strong>columns</strong>表示将被映射进标量的结果集中的各个列。</p>
+<p>这里要说一下标量（Scalar）这个概念。在物理学上，标量与矢量（Vector）是相互对应的，矢量是既有方向又有大小的量，而标量是只有大小的量。在此处，Scalar的含义与物理学上的定义差不多，Scalar可以认为是一个没有属性/方法的单纯的常量(可以想象为java数据类型的primitive type)，而与它相对的则是有方法/属性的对象(object type)。那么采用这种映射机制，我们从数据库取来的每一条记录的每一个字段，仅仅是被单纯的作为一个常量，保存在每一个columnResult中。</p>
+<p>@ ColumnResult，就是指在sql语句中，将哪些查询的列保存进来。每一个@ColumnResult对应一个列，name=”order_id” ，注意，如果在select的时候，用AS 制定了列的别名，“order_id” 则表示的是别名。</p>
+<p>这种映射方式比较简单，我们可以推测，得到的结果集List中，数据会是这样：<br>[ {“列1”, “列2”, “列3”, …},  {“列1”, “列2”, “列3”, …}, …… ]</p>
+<p>经过运行测试程序，得到了我们的推论<br>`</p>
+<p><font color="#0099ff"><br><strong>*</strong>ReturnOrderListWithFullScalarType<strong>*</strong><br> 52 2009-05-27 00:00:00.0    This is an order creation example. 36817.0    39 John Smith<br> 55 2009-05-27 00:00:00.0    This is an order creation example. 3347.0 39 John Smith<br> ……<br> <font><br>`</font></font></p>
+<h3 id="二、映射到实体"><a href="#二、映射到实体" class="headerlink" title="二、映射到实体"></a>二、映射到实体</h3><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">@NamedNativeQueries</div><div class="line">(</div><div class="line">    &#123;</div><div class="line">       @NamedNativeQuery(</div><div class="line">           name="ReturnOrderListWithFullEntityType",</div><div class="line">              query="select o.id as order_id,o.create_date as order_creation_date,o.description as order_description,o.sum_price as order_sum_total,</div><div class="line">		c.name as customer_name,c.ctype as customer_type,c.id as customer_id from orders o join customer c on o.cust_id=c.id where o.cust_id=?1",</div><div class="line">           resultSetMapping="ReturnOrderListWithFullEntityType"),</div><div class="line">        。。。。。。。。。。。。。可能还有更多的本地查询设置</div><div class="line">	&#125;</div><div class="line">)</div></pre></td></tr></table></figure>
+<p>改变本地查询的resultSetMapping</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@SqlResultSetMapping</span></div><div class="line">    (</div><div class="line">       name=<span class="string">"ReturnOrderListWithFullEntityType"</span>,</div><div class="line">       entities=</div><div class="line">       &#123;</div><div class="line">           <span class="meta">@EntityResult</span></div><div class="line">           (</div><div class="line">              entityClass=entity.Order.class,</div><div class="line">              fields=</div><div class="line">              &#123;</div><div class="line">    <span class="meta">@FieldResult</span>(name=<span class="string">"id"</span>,column=<span class="string">"order_id"</span>),</div><div class="line">                         <span class="meta">@FieldResult</span>(name=<span class="string">"date"</span>,column=<span class="string">"order_creation_date"</span>),</div><div class="line">                  <span class="meta">@FieldResult</span>(name=<span class="string">"desc"</span>,column=<span class="string">"order_description"</span>),</div><div class="line">    <span class="meta">@FieldResult</span>(name=<span class="string">"sum"</span>,column=<span class="string">"order_sum_total"</span>)</div><div class="line">              &#125;</div><div class="line">           ),</div><div class="line"> </div><div class="line">           <span class="meta">@EntityResult</span></div><div class="line">           (</div><div class="line">              entityClass=entity.Customer.class,</div><div class="line">              discriminatorColumn=<span class="string">"customer_type"</span>,</div><div class="line">              fields=</div><div class="line">              &#123;</div><div class="line">                  <span class="meta">@FieldResult</span>(name=<span class="string">"id"</span>,column=<span class="string">"customer_id"</span>),</div><div class="line">                  <span class="meta">@FieldResult</span>(name=<span class="string">"name"</span>,column=<span class="string">"customer_name"</span>)</div><div class="line">              &#125;</div><div class="line">           )</div><div class="line">       &#125;,</div><div class="line">       columns=&#123;&#125;</div><div class="line">    )</div></pre></td></tr></table></figure>
+<p><strong>entities</strong>属性是一个包含与返回结果集相映射的所有实体的一个数组。这条查询得到了订单和用户的信息，所以，与结果集映射的实体，就应该是Order和Customer。<br>每一个映射实体用<strong>@EntityResult</strong>表示，entityClass表示实体类，fields表示该实体类中的属性，与查询结果中的哪些个列相映射。而每一个“属性&lt;-&gt;列”的映射关系，又保存在@FieldResult里面。name是实体属性，column是查询列（或列别名）</p>
+<p>要注意的是，如果要将结果集映射到实体对象，则</p>
+<ol>
+<li><p>Select 语句中必须包含实体所映射的表中的PK，也就是 select o.id as order_id</p>
+</li>
+<li><p>反过来，“属性&lt;-&gt;列”的映射，也必须将表的PK映射到实体类的用@Id annotation批注的字段或属性上。</p>
+</li>
+</ol>
+<p>否则，JPA就会抛出一个exception</p>
+<p>oracle.toplink.essentials.exceptions.QueryException<br>Exception Description: <font color="red">The primary key read from the row [DatabaseRecord(<br>    orders.ID =&gt; null<br>    orders.CREATE_DATE =&gt; 2009-05-27 00:00:00.0<br>    orders.SUM_PRICE =&gt; 36817.0<br>    orders.DESCRIPTION =&gt; This is an order creation example.<br>    orders.cust_id =&gt; null)] during the execution of the query was detected to be null. Primary keys must not contain null.<br>    <font></font></font></p>
+<p>再看一下关于Customer实体的映射，与Order不一样的地方，是discriminatorColumn=”customer_type” (可能为列别名)<br>加上这个属性的原因是，Customer类是一个父类，以供其他子类继承，而J PA的内在多态性机制将会获取到Customer的实际类型。根据J PA @Inheritance批注，得知，父类实体的表中必须有一个字段（默认为DTYPE）来表示各个子类的类型。所以当要将查询结果集保存为实体的时候，它必须要知道你所保存的这个Customer实体到底是哪种类型。<br>所以，你还必须在select子句中取得这个Discrimator Type的字段。<br>否则又会抛出异常： </p>
+<p>oracle.toplink.essentials.exceptions.QueryException<br>Exception Description: <font color="red">Custom SQL failed to provide descriminator column : , as defined in SQLResultSetMapping : ReturnOrderListWithFullEntityType.</font></p>
+<font>
+
+<p>或者：</p>
+<p>oracle.toplink.essentials.exceptions.QueryException<br>Exception Description: <font color="red">Custom SQL failed to provide descriminator column : customer_type, as defined in SQLResultSetMapping : ReturnOrderListWithPartEntityPartScalarType.</font></p>
+<font>
+
+
+<p>通过这种映射方式，我们可以推测，得到的结果集List中，数据会是这样：</p>
+<p><font color="blue">[ {“Order对象1”, “Customer对象1”}, {“Order对象2”, “Customerr对象2”}, …… ]<font></font></font></p>
+<p>经过运行测试程序，得到了我们的推论</p>
+<p><font color="#0099ff"><br><strong>*</strong>ReturnOrderListWithFullEntityType<strong>*</strong><br>entity.Order@48edb5 entity.GoldenCustomer@1ee2c2c<br>entity.Order@1402d5a entity.GoldenCustomer@1ee2c2c<br>entity.Order@1e13e07 entity.GoldenCustomer@1ee2c2c<br>entity.Order@9cfec1 entity.GoldenCustomer@1ee2c2c<br>entity.Order@747fa2 entity.GoldenCustomer@1ee2c2c<br>……</font></p>
+<font>
+
+<p>看来的确是保存了对象，而且注意第二个对象不是Customer而是GoldenCustomer，这说明，JPA自动将数据映射进了GoldenCustomer实体（尽管我们使用的是Customer实体进行保存 “entityClass=entity.Customer.class”）</p>
+<h3 id="三、映射到实体与标量值的组合"><a href="#三、映射到实体与标量值的组合" class="headerlink" title="三、映射到实体与标量值的组合"></a>三、映射到实体与标量值的组合</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@SqlResultSetMapping</span></div><div class="line">    (</div><div class="line">       name=<span class="string">"ReturnOrderListWithPartEntityPartScalarType"</span>,</div><div class="line">       entities=</div><div class="line">       &#123;</div><div class="line">           <span class="meta">@EntityResult</span></div><div class="line">           (</div><div class="line">              entityClass=entity.Order.class,</div><div class="line">              fields=</div><div class="line">              &#123;</div><div class="line">               <span class="meta">@FieldResult</span>(name=<span class="string">"id"</span>,column=<span class="string">"order_id"</span>),</div><div class="line">               <span class="meta">@FieldResult</span>(name=<span class="string">"date"</span>,column=<span class="string">"order_creation_date"</span>),</div><div class="line">               <span class="meta">@FieldResult</span>(name=<span class="string">"desc"</span>,column=<span class="string">"order_description"</span>),</div><div class="line">              <span class="meta">@FieldResult</span>(name=<span class="string">"sum"</span>,column=<span class="string">"order_sum_total"</span>)</div><div class="line">              &#125;</div><div class="line">           ),</div><div class="line">          </div><div class="line">           <span class="meta">@EntityResult</span></div><div class="line">           (</div><div class="line">              entityClass=entity.Customer.class,</div><div class="line">              discriminatorColumn=<span class="string">"customer_type"</span>,</div><div class="line">              fields=</div><div class="line">              &#123;</div><div class="line">                  <span class="meta">@FieldResult</span>(name=<span class="string">"id"</span>,column=<span class="string">"customer_id"</span>),</div><div class="line">                  <span class="meta">@FieldResult</span>(name=<span class="string">"ctype"</span>,column=<span class="string">"customer_type"</span>)</div><div class="line">              &#125;</div><div class="line">           )</div><div class="line">       &#125;,</div><div class="line">       columns=</div><div class="line">       &#123;</div><div class="line">           <span class="meta">@ColumnResult</span>(name=<span class="string">"customer_name"</span>)</div><div class="line">       &#125;</div><div class="line">    )</div></pre></td></tr></table></figure>
+<p>我们将结果集中与订单有关的保存进Order Entity，把与Customer有关的，将id和customer type 保存进Customer Entity，把customer name保存进标量。</p>
+<p>经过运行测试程序，得到</p>
+<p><font color="#0099ff"><br><strong>*</strong>ReturnOrderListWithPartEntityPartScalarType<strong>*</strong><br>entity.Order@48edb5 entity.GoldenCustomer@1ee2c2c   John Smith<br>entity.Order@1402d5a entity.GoldenCustomer@1ee2c2c   John Smith<br>entity.Order@1e13e07 entity.GoldenCustomer@1ee2c2c   John Smith</font></p>
+<font>
+
+<p>综上所述，我们可以采取多种resultset映射机制来保存用本地查询得到的结果集，具体采取哪种要看具体的情况，要继续了解这方面的知识。</p>
+</font></font></font></font>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/JPA/" rel="tag"># JPA</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/03/22/AngularJs的$http请求服务/" rel="next" title="AngularJs的$http请求服务">
+                <i class="fa fa-chevron-left"></i> AngularJs的$http请求服务
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/usericon.png"
+               alt="Sunsc" />
+          <p class="site-author-name" itemprop="name">Sunsc</p>
+          <p class="site-description motion-element" itemprop="description">Java后台 , web开发</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/yuyue888" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#一、简单映射"><span class="nav-number">1.</span> <span class="nav-text">一、简单映射</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二、映射到实体"><span class="nav-number">2.</span> <span class="nav-text">二、映射到实体</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#三、映射到实体与标量值的组合"><span class="nav-number">3.</span> <span class="nav-text">三、映射到实体与标量值的组合</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sunsc</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
