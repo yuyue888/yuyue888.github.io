@@ -96,7 +96,7 @@
 <meta property="og:image" content="http://yoursite.com/2017/06/13/从零开始搭建REST风格的Spring项目/45360644_p0.jpg">
 <meta property="og:image" content="http://yoursite.com/2017/06/13/从零开始搭建REST风格的Spring项目/项目结构.png">
 <meta property="og:image" content="http://yoursite.com/2017/06/13/从零开始搭建REST风格的Spring项目/控制器测试.png">
-<meta property="og:updated_time" content="2017-06-13T15:08:22.457Z">
+<meta property="og:updated_time" content="2017-06-13T15:14:05.153Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="从零开始搭建REST风格的Spring项目（一）">
 <meta name="twitter:description" content="最近学习《SpringInAction》感觉收获不小，以前只是使用Spring进行开发，并不清楚Spring项目是如何跑起来的，自己试了下搭建简单Spring项目。　　Spring装配bean有三种主要方式：自动化配置、基于Java的显式配置和基于XML的显式配置。本项目大部分均采用自动化配置。web环境搭建则完全使用Java配置，放弃了传统的web.xml文件配置，使用maven工具进行版本">
@@ -338,7 +338,7 @@
       
         <p>　　最近学习《SpringInAction》感觉收获不小，以前只是使用Spring进行开发，并不清楚Spring项目是如何跑起来的，自己试了下搭建简单Spring项目。<br>　　Spring装配bean有三种主要方式：自动化配置、基于Java的显式配置和基于XML的显式配置。本项目大部分均采用自动化配置。web环境搭建则完全使用Java配置，放弃了传统的web.xml文件配置，使用maven工具进行版本管理。<br>　　<br><img src="/2017/06/13/从零开始搭建REST风格的Spring项目/45360644_p0.jpg" alt="45360644_p0.jpg" title=""><br><a id="more"></a></p>
 <h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><img src="/2017/06/13/从零开始搭建REST风格的Spring项目/项目结构.png" alt="项目结构.png" title="">
-<p>　　项目使用maven进行版本控制，pom文件可以去 <a href="">https://github.com/yuyue888/SpringInActionDemo/blob/master/pom.xml</a> 查看。</p>
+<p>　　项目使用maven进行版本控制，pom文件可以去 <a href="https://github.com/yuyue888/SpringInActionDemo/blob/master/pom.xml" target="_blank" rel="external">这里</a> 查看。</p>
 <h2 id="配置DispatcherServlet"><a href="#配置DispatcherServlet" class="headerlink" title="配置DispatcherServlet"></a>配置DispatcherServlet</h2><p>　　DispatcherServlet无疑是Spring MVC的核心，它负责将请求路由到其他组件中。按照传统一般在web.xml文件中进行配置，随着Servlet3 规范和Spring3.1的功能增强，现在可以尝试在Java代码中进行配置。<br>　　这里采用继承AbstractAnnotationConfigDispatcherServletInitializer类的方法快速仅需配置，这个类是WebApplicationinitializer的基础实现。当部署到Servlet3.0容器的时候，容器会自动发现它并用来配置Servlet上下文。这个类有两个抽象方法：</p>
 <ul>
 <li>getRootConfigClasses()</li>
@@ -349,7 +349,7 @@
 <h2 id="配置RootConfig配置"><a href="#配置RootConfig配置" class="headerlink" title="配置RootConfig配置"></a>配置RootConfig配置</h2><p>这是根应用上下文的配置类，由于本次开发的web应用仅定义了一个DispatcherServlet，因此不需要什么配置。。。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Configuration</span></div><div class="line"><span class="meta">@ComponentScan</span>(basePackages = &#123;<span class="string">"core"</span>&#125;,</div><div class="line">        excludeFilters = &#123;<span class="meta">@ComponentScan</span>.Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class)&#125;)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RootConfig</span> </span>&#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure><br>@ComponentScan注解中指定扫描bean的位置。</p>
 <h2 id="定义控制器"><a href="#定义控制器" class="headerlink" title="定义控制器"></a>定义控制器</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RestController</span></div><div class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestController</span> </span>&#123;</div><div class="line">    <span class="meta">@RequestMapping</span>(value= <span class="string">"/test/&#123;test_name&#125;"</span>,method = RequestMethod.GET)</div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getTestName</span><span class="params">(@PathVariable(<span class="string">"test_name"</span>)</span> String name)</span>&#123;</div><div class="line">        <span class="keyword">return</span> name;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>用maven启动tomcat后，使用DHC插件进行接口测试<br><img src="/2017/06/13/从零开始搭建REST风格的Spring项目/控制器测试.png" alt="控制器测试.png" title=""></p>
-<p>简单Spring项目算是搭建成功了。<br>代码在 <a href="">https://github.com/yuyue888/SpringInActionDemo</a></p>
+<p>简单Spring项目算是搭建成功了。<br>代码在 <a href="https://github.com/yuyue888/SpringInActionDemo" target="_blank" rel="external">SpringInActionDemo</a></p>
 <p>下一节将继续说明如何添加对中文字符的支持和支持复杂类型。</p>
 
       
