@@ -1,0 +1,700 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Java , Spring," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="最近学习《SpringInAction》感觉收获不小，以前只是使用Spring进行开发，并不清楚Spring项目是如何跑起来的，自己试了下搭建简单Spring项目。　　Spring装配bean有三种主要方式：自动化配置、基于Java的显式配置和基于XML的显式配置。本项目大部分均采用自动化配置。web环境搭建则完全使用Java配置，放弃了传统的web.xml文件配置，使用maven工具进行版本">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从零开始搭建REST风格的Spring项目（一）">
+<meta property="og:url" content="http://yoursite.com/2017/06/13/从零开始搭建REST风格的Spring项目/index.html">
+<meta property="og:site_name" content="Yuyue">
+<meta property="og:description" content="最近学习《SpringInAction》感觉收获不小，以前只是使用Spring进行开发，并不清楚Spring项目是如何跑起来的，自己试了下搭建简单Spring项目。　　Spring装配bean有三种主要方式：自动化配置、基于Java的显式配置和基于XML的显式配置。本项目大部分均采用自动化配置。web环境搭建则完全使用Java配置，放弃了传统的web.xml文件配置，使用maven工具进行版本">
+<meta property="og:image" content="http://yoursite.com/2017/06/13/从零开始搭建REST风格的Spring项目/45360644_p0.jpg">
+<meta property="og:image" content="http://yoursite.com/2017/06/13/从零开始搭建REST风格的Spring项目/项目结构.png">
+<meta property="og:image" content="http://yoursite.com/2017/06/13/从零开始搭建REST风格的Spring项目/控制器测试.png">
+<meta property="og:updated_time" content="2017-06-13T15:08:22.457Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从零开始搭建REST风格的Spring项目（一）">
+<meta name="twitter:description" content="最近学习《SpringInAction》感觉收获不小，以前只是使用Spring进行开发，并不清楚Spring项目是如何跑起来的，自己试了下搭建简单Spring项目。　　Spring装配bean有三种主要方式：自动化配置、基于Java的显式配置和基于XML的显式配置。本项目大部分均采用自动化配置。web环境搭建则完全使用Java配置，放弃了传统的web.xml文件配置，使用maven工具进行版本">
+<meta name="twitter:image" content="http://yoursite.com/2017/06/13/从零开始搭建REST风格的Spring项目/45360644_p0.jpg">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"always"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/06/13/从零开始搭建REST风格的Spring项目/"/>
+
+
+
+
+
+  <title> 从零开始搭建REST风格的Spring项目（一） | Yuyue </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Yuyue</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+    
+      <p class="site-subtitle">胡说八道</p>
+    
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/06/13/从零开始搭建REST风格的Spring项目/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="Sunsc">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/uploads/usericon.png">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Yuyue">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Yuyue" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                从零开始搭建REST风格的Spring项目（一）
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-06-13T21:46:59+08:00">
+                2017-06-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>　　最近学习《SpringInAction》感觉收获不小，以前只是使用Spring进行开发，并不清楚Spring项目是如何跑起来的，自己试了下搭建简单Spring项目。<br>　　Spring装配bean有三种主要方式：自动化配置、基于Java的显式配置和基于XML的显式配置。本项目大部分均采用自动化配置。web环境搭建则完全使用Java配置，放弃了传统的web.xml文件配置，使用maven工具进行版本管理。<br>　　<br><img src="/2017/06/13/从零开始搭建REST风格的Spring项目/45360644_p0.jpg" alt="45360644_p0.jpg" title=""><br><a id="more"></a></p>
+<h2 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h2><img src="/2017/06/13/从零开始搭建REST风格的Spring项目/项目结构.png" alt="项目结构.png" title="">
+<p>　　项目使用maven进行版本控制，pom文件可以去 <a href="">https://github.com/yuyue888/SpringInActionDemo/blob/master/pom.xml</a> 查看。</p>
+<h2 id="配置DispatcherServlet"><a href="#配置DispatcherServlet" class="headerlink" title="配置DispatcherServlet"></a>配置DispatcherServlet</h2><p>　　DispatcherServlet无疑是Spring MVC的核心，它负责将请求路由到其他组件中。按照传统一般在web.xml文件中进行配置，随着Servlet3 规范和Spring3.1的功能增强，现在可以尝试在Java代码中进行配置。<br>　　这里采用继承AbstractAnnotationConfigDispatcherServletInitializer类的方法快速仅需配置，这个类是WebApplicationinitializer的基础实现。当部署到Servlet3.0容器的时候，容器会自动发现它并用来配置Servlet上下文。这个类有两个抽象方法：</p>
+<ul>
+<li>getRootConfigClasses()</li>
+<li>getServletConfigClasses()</li>
+</ul>
+<p>　　这两个类是做什么的呢？查阅官方文档后发现，在Spring MVC中我们其实是可以创建出多个DispatcherServlet的（只要创建多个继承自AbstractAnnotationConfigDispatcherServletInitializer的类即可）。而每个DispatcherServlet有自己的应用上下文（WebApplicationContext），这个应用上下文只针对这个DispatcherServlet有用。<br>　　这也就是getServletConfigClasses的作用，获取这个DispatcherServlet的应用上下文的配置类。而除了每个DispatcherServlet配置类的应用上下文之外，还有一个根应用上下文，这个应用上下文的作用是为了在多个DispatcherServlet之间共享Bean，比如数据源Bean，这就是getRootConfigClasses的作用，用于返回根应用上下文的配置类。Spring框架的机制会保证如果在当前DispatcherServlet的应用上下文中没有找到想要的bean时，会去根应用上下文中去找。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebAppInitializer</span> <span class="keyword">extends</span> <span class="title">AbstractAnnotationConfigDispatcherServletInitializer</span> </span>&#123;</div><div class="line">    <span class="comment">//该方法将有@Component注解或者@Component注解的配置类提供给根应用上下文</span></div><div class="line">    <span class="keyword">protected</span> Class&lt;?&gt;[] getRootConfigClasses() &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Class&lt;?&gt;[]&#123;RootConfig.class&#125;;</div><div class="line">    &#125;</div><div class="line">    <span class="comment">//将有@Component注解或者@Component注解的配置类提供给Servlet应用上下文</span></div><div class="line">    <span class="keyword">protected</span> Class&lt;?&gt;[] getServletConfigClasses() &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> Class&lt;?&gt;[]&#123;WebConfig.class&#125;;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">protected</span> String[] getServletMappings() &#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> String[]&#123;<span class="string">"/"</span>&#125;;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="配置Spring-MVC"><a href="#配置Spring-MVC" class="headerlink" title="配置Spring MVC"></a>配置Spring MVC</h2><p>　　过去一般采用<code>&lt;mvc:annotation-driven&gt;</code>启用注解驱动的SpringMVC，现在仅需在用于配置的Java类上加上@EnableWebMvc注解即可。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Configuration</span></div><div class="line"><span class="meta">@ComponentScan</span>(basePackages = <span class="string">"core"</span>)</div><div class="line"><span class="meta">@EnableWebMvc</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">WebConfig</span> <span class="keyword">extends</span> <span class="title">WebMvcConfigurerAdapter</span> </span>&#123;</div><div class="line">    <span class="comment">//配置jsp视图解析器</span></div><div class="line">    <span class="meta">@Bean</span></div><div class="line">    <span class="function"><span class="keyword">public</span> ViewResolver <span class="title">viewResolver</span><span class="params">()</span> </span>&#123;</div><div class="line">        InternalResourceViewResolver resolver = <span class="keyword">new</span> InternalResourceViewResolver();</div><div class="line">        resolver.setPrefix(<span class="string">"/WEB-INF/jsp"</span>);</div><div class="line">        resolver.setSuffix(<span class="string">".jsp"</span>);</div><div class="line">        resolver.setExposeContextBeansAsAttributes(<span class="keyword">true</span>);</div><div class="line">        <span class="keyword">return</span> resolver;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">//配置静态资源处理</span></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">configureDefaultServletHandling</span><span class="params">(DefaultServletHandlerConfigurer configurer)</span> </span>&#123;</div><div class="line">        configurer.enable();</div><div class="line">    &#125;</div><div class="line"></div><div class="line">   </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="配置RootConfig配置"><a href="#配置RootConfig配置" class="headerlink" title="配置RootConfig配置"></a>配置RootConfig配置</h2><p>这是根应用上下文的配置类，由于本次开发的web应用仅定义了一个DispatcherServlet，因此不需要什么配置。。。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Configuration</span></div><div class="line"><span class="meta">@ComponentScan</span>(basePackages = &#123;<span class="string">"core"</span>&#125;,</div><div class="line">        excludeFilters = &#123;<span class="meta">@ComponentScan</span>.Filter(type = FilterType.ANNOTATION, value = EnableWebMvc.class)&#125;)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RootConfig</span> </span>&#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure><br>@ComponentScan注解中指定扫描bean的位置。</p>
+<h2 id="定义控制器"><a href="#定义控制器" class="headerlink" title="定义控制器"></a>定义控制器</h2><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@RestController</span></div><div class="line"><span class="meta">@RequestMapping</span>(<span class="string">"/"</span>)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestController</span> </span>&#123;</div><div class="line">    <span class="meta">@RequestMapping</span>(value= <span class="string">"/test/&#123;test_name&#125;"</span>,method = RequestMethod.GET)</div><div class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getTestName</span><span class="params">(@PathVariable(<span class="string">"test_name"</span>)</span> String name)</span>&#123;</div><div class="line">        <span class="keyword">return</span> name;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>用maven启动tomcat后，使用DHC插件进行接口测试<br><img src="/2017/06/13/从零开始搭建REST风格的Spring项目/控制器测试.png" alt="控制器测试.png" title=""></p>
+<p>简单Spring项目算是搭建成功了。<br>代码在 <a href="">https://github.com/yuyue888/SpringInActionDemo</a></p>
+<p>下一节将继续说明如何添加对中文字符的支持和支持复杂类型。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Java-Spring/" rel="tag"># Java , Spring</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/04/23/JPA原生查询(Native Query)/" rel="next" title="JPA原生查询(Native Query)">
+                <i class="fa fa-chevron-left"></i> JPA原生查询(Native Query)
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+          
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/usericon.png"
+               alt="Sunsc" />
+          <p class="site-author-name" itemprop="name">Sunsc</p>
+          <p class="site-description motion-element" itemprop="description">Java后台 , web开发</p>
+        </div>
+        <nav class="site-state motion-element">
+        
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/yuyue888" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#环境搭建"><span class="nav-number">1.</span> <span class="nav-text">环境搭建</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置DispatcherServlet"><span class="nav-number">2.</span> <span class="nav-text">配置DispatcherServlet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置Spring-MVC"><span class="nav-number">3.</span> <span class="nav-text">配置Spring MVC</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置RootConfig配置"><span class="nav-number">4.</span> <span class="nav-text">配置RootConfig配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定义控制器"><span class="nav-number">5.</span> <span class="nav-text">定义控制器</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sunsc</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.0"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
