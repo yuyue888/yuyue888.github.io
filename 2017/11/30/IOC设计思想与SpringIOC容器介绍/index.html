@@ -92,9 +92,7 @@
 可测试性
 可维护性
 可扩展性
-可复用性
-
-职责分离职责分离是实现程序解耦的一种常用手段。设计模式六大原则之一的单一职责原则（SRP）指出，就一个类而言，应该只专注于做一件事和仅有一个引起它变化的原因。将一个复杂的">
+可复用性">
 <meta property="og:type" content="article">
 <meta property="og:title" content="IoC设计思想与springIoC容器介绍">
 <meta property="og:url" content="http://yoursite.com/2017/11/30/IOC设计思想与SpringIOC容器介绍/index.html">
@@ -104,15 +102,15 @@
 可测试性
 可维护性
 可扩展性
-可复用性
-
-职责分离职责分离是实现程序解耦的一种常用手段。设计模式六大原则之一的单一职责原则（SRP）指出，就一个类而言，应该只专注于做一件事和仅有一个引起它变化的原因。将一个复杂的">
+可复用性">
+<meta property="og:image" content="http://yoursite.com/2017/11/30/IOC设计思想与SpringIOC容器介绍/940cbaa7.png">
 <meta property="og:image" content="http://yoursite.com/2017/11/30/IOC设计思想与SpringIOC容器介绍/765b3154.png">
+<meta property="og:image" content="http://yoursite.com/2017/11/30/IOC设计思想与SpringIOC容器介绍/ae7967fd.png">
 <meta property="og:image" content="http://yoursite.com/2017/11/30/IOC设计思想与SpringIOC容器介绍/210af86a.png">
 <meta property="og:image" content="http://yoursite.com/2017/11/30/IOC设计思想与SpringIOC容器介绍/33c0a767.png">
 <meta property="og:image" content="http://yoursite.com/2017/11/30/IOC设计思想与SpringIOC容器介绍/96fa3fd7.png">
 <meta property="og:image" content="http://yoursite.com/2017/11/30/IOC设计思想与SpringIOC容器介绍/87af16a5.png">
-<meta property="og:updated_time" content="2018-01-02T15:59:13.326Z">
+<meta property="og:updated_time" content="2018-01-04T16:50:44.521Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="IoC设计思想与springIoC容器介绍">
 <meta name="twitter:description" content="IoC设计思想解耦解耦是面向对象设计中永恒的主题，所有的设计原则都在围绕它。解耦就是将软件中可能会变化的部分相互间进行隔离，使得某个部分变化不影响其它部分。主要目标是实现下列四种特性：
@@ -120,10 +118,8 @@
 可测试性
 可维护性
 可扩展性
-可复用性
-
-职责分离职责分离是实现程序解耦的一种常用手段。设计模式六大原则之一的单一职责原则（SRP）指出，就一个类而言，应该只专注于做一件事和仅有一个引起它变化的原因。将一个复杂的">
-<meta name="twitter:image" content="http://yoursite.com/2017/11/30/IOC设计思想与SpringIOC容器介绍/765b3154.png">
+可复用性">
+<meta name="twitter:image" content="http://yoursite.com/2017/11/30/IOC设计思想与SpringIOC容器介绍/940cbaa7.png">
 
 
 
@@ -388,6 +384,8 @@
 <li>可扩展性</li>
 <li>可复用性</li>
 </ul>
+<img src="/2017/11/30/IOC设计思想与SpringIOC容器介绍/940cbaa7.png" alt="940cbaa7.png" title="">
+<a id="more"></a>
 <h3 id="职责分离"><a href="#职责分离" class="headerlink" title="职责分离"></a>职责分离</h3><p>职责分离是实现程序解耦的一种常用手段。设计模式六大原则之一的单一职责原则（SRP）指出，就一个类而言，应该只专注于做一件事和仅有一个引起它变化的原因。将一个复杂的功能点拆分成多个类，使得每个类只负责一件事。</p>
 <p>但是当多个对象共同完成一个功能时，相互之间就需要进行协作。协作就会产生依赖，就会导致耦合，这是不可避免的，唯一能做的就是如何使得这种依赖带来的耦合度更低。<br>依赖包括两种：</p>
 <ul>
@@ -407,15 +405,20 @@
 <p><strong>缺点</strong>：需要额外的工厂类，增加代码量。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserService</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> UserDao userDao;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">UserService</span><span class="params">()</span> </span>&#123;</div><div class="line">        userDao = UserDaoFactory.getInstance().get();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserDao</span> </span>&#123;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserDaoFactory</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">static</span> UserDaoFactory instance = <span class="keyword">new</span> UserDaoFactory();</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> UserDaoFactory <span class="title">getInstance</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> instance;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> UserDao userDao = <span class="keyword">new</span> UserDao();</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> UserDao <span class="title">get</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> userDao;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <hr>
-<h2 id="IoC容器核心概念"><a href="#IoC容器核心概念" class="headerlink" title="IoC容器核心概念"></a>IoC容器核心概念</h2><p>由于上面几种创建对象的方法都有明显缺点，不利于大型工程的开发，因而出现了IoC容器。IoC容器结合工厂模式与依赖注入，将对象创建统一至容器中，所有的创建细节以统一的形式配置与管理。<br><img src="/2017/11/30/IOC设计思想与SpringIOC容器介绍/765b3154.png" alt="765b3154.png" title=""><br>IoC容器组成部分：</p>
+<h2 id="IoC容器核心概念"><a href="#IoC容器核心概念" class="headerlink" title="IoC容器核心概念"></a>IoC容器核心概念</h2><p>由于上面几种创建对象的方法都有明显缺点，不利于大型工程的开发，因而出现了IoC容器。<br>控制反转（Inversion of Control） 就是依赖倒置原则的一种代码设计的思路。具体采用的方法就是所谓的依赖注入（Dependency Injection）。所谓依赖注入，就是把底层类作为参数传入上层类，实现上层类对下层类的“控制”。<br>IoC容器结合工厂模式与依赖注入，将对象创建统一至容器中，所有的创建细节以统一的形式配置与管理。</p>
+<img src="/2017/11/30/IOC设计思想与SpringIOC容器介绍/765b3154.png" alt="765b3154.png" title="">
+<p>IoC容器组成部分：</p>
 <ol>
 <li>配置文件——进行对象的定义，声明对象的创建细节（Bean定义）</li>
 <li>Bean——对应配置文件中具体类的实例（可能被代理过）</li>
 <li>IOC容器——负责所有Bean的生命周期管理，并为客户端提供获取Bean的接口</li>
 <li>客户端——通过IOC容器获取Bean</li>
 </ol>
-<p><strong>优点</strong>：具有工厂模式与依赖注入的优点<br><strong>缺点</strong>：</p>
+<p><strong>优点</strong>：</p>
 <ul>
+<li>容器可以自动对你的代码进行初始化，你只需要维护一个Configuration（可以是xml可以是一段代码）</li>
+<li>在创建实例的时候不需要了解其中的细节<img src="/2017/11/30/IOC设计思想与SpringIOC容器介绍/ae7967fd.png" alt="ae7967fd.png" title="">
+<strong>缺点</strong>：</li>
 <li>严重依赖IOC容器</li>
 <li>脱离IOC容器创建对象将非常困难</li>
 <li>容器外对象访问容器中的实例时，将依赖容器的特定API</li>
