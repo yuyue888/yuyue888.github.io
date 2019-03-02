@@ -90,25 +90,25 @@
 <meta name="description" content="面向切面编程（Aspect Oriented Program）　我们知道，面向对象的思想是一切皆对象，三大特性是继承、多态和封装。而封装就要求将功能分散到不同的对象中去，这在软件设计中往往称为职责分配。实际上也就是说，让不同的类设计不同的方法。这样代码就分散到一个个的类中去了。这样做的好处是解决了软件系统中角色划分的问题，使类可重用。　但是人们也发现，在分散代码的同时，也增加了代码的重复性。比如说">
 <meta property="og:type" content="article">
 <meta property="og:title" content="AOP思想与SpringAOP实现机制">
-<meta property="og:url" content="http://yoursite.com/2018/01/05/AOP思想与SpringAOP实现机制/index.html">
+<meta property="og:url" content="https://yuyue888.github.io/2018/01/05/AOP思想与SpringAOP实现机制/index.html">
 <meta property="og:site_name" content="咸鱼开发修炼之路">
 <meta property="og:description" content="面向切面编程（Aspect Oriented Program）　我们知道，面向对象的思想是一切皆对象，三大特性是继承、多态和封装。而封装就要求将功能分散到不同的对象中去，这在软件设计中往往称为职责分配。实际上也就是说，让不同的类设计不同的方法。这样代码就分散到一个个的类中去了。这样做的好处是解决了软件系统中角色划分的问题，使类可重用。　但是人们也发现，在分散代码的同时，也增加了代码的重复性。比如说">
-<meta property="og:image" content="http://yoursite.com/2018/01/05/AOP思想与SpringAOP实现机制/69108342.png">
-<meta property="og:image" content="http://yoursite.com/2018/01/05/AOP思想与SpringAOP实现机制/50af8cfd.png">
-<meta property="og:image" content="http://yoursite.com/2018/01/05/AOP思想与SpringAOP实现机制/3b1c8a84.png">
-<meta property="og:image" content="http://yoursite.com/2018/01/05/AOP思想与SpringAOP实现机制/a235de42.png">
-<meta property="og:image" content="http://yoursite.com/2018/01/05/AOP思想与SpringAOP实现机制/bed3c476.png">
-<meta property="og:image" content="http://yoursite.com/2018/01/05/AOP思想与SpringAOP实现机制/43f3d0e3.png">
-<meta property="og:image" content="http://yoursite.com/2018/01/05/AOP思想与SpringAOP实现机制/62225053.png">
-<meta property="og:image" content="http://yoursite.com/2018/01/05/AOP思想与SpringAOP实现机制/170ab71e.png">
-<meta property="og:image" content="http://yoursite.com/2018/01/05/AOP思想与SpringAOP实现机制/b15ae209.png">
-<meta property="og:image" content="http://yoursite.com/2018/01/05/AOP思想与SpringAOP实现机制/a8bf9681.png">
-<meta property="og:image" content="http://yoursite.com/2018/01/05/AOP思想与SpringAOP实现机制/f12f2e65.png">
+<meta property="og:image" content="https://yuyue888.github.io/2018/01/05/AOP思想与SpringAOP实现机制/69108342.png">
+<meta property="og:image" content="https://yuyue888.github.io/2018/01/05/AOP思想与SpringAOP实现机制/50af8cfd.png">
+<meta property="og:image" content="https://yuyue888.github.io/2018/01/05/AOP思想与SpringAOP实现机制/3b1c8a84.png">
+<meta property="og:image" content="https://yuyue888.github.io/2018/01/05/AOP思想与SpringAOP实现机制/a235de42.png">
+<meta property="og:image" content="https://yuyue888.github.io/2018/01/05/AOP思想与SpringAOP实现机制/bed3c476.png">
+<meta property="og:image" content="https://yuyue888.github.io/2018/01/05/AOP思想与SpringAOP实现机制/43f3d0e3.png">
+<meta property="og:image" content="https://yuyue888.github.io/2018/01/05/AOP思想与SpringAOP实现机制/62225053.png">
+<meta property="og:image" content="https://yuyue888.github.io/2018/01/05/AOP思想与SpringAOP实现机制/170ab71e.png">
+<meta property="og:image" content="https://yuyue888.github.io/2018/01/05/AOP思想与SpringAOP实现机制/b15ae209.png">
+<meta property="og:image" content="https://yuyue888.github.io/2018/01/05/AOP思想与SpringAOP实现机制/a8bf9681.png">
+<meta property="og:image" content="https://yuyue888.github.io/2018/01/05/AOP思想与SpringAOP实现机制/f12f2e65.png">
 <meta property="og:updated_time" content="2018-01-07T09:54:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="AOP思想与SpringAOP实现机制">
 <meta name="twitter:description" content="面向切面编程（Aspect Oriented Program）　我们知道，面向对象的思想是一切皆对象，三大特性是继承、多态和封装。而封装就要求将功能分散到不同的对象中去，这在软件设计中往往称为职责分配。实际上也就是说，让不同的类设计不同的方法。这样代码就分散到一个个的类中去了。这样做的好处是解决了软件系统中角色划分的问题，使类可重用。　但是人们也发现，在分散代码的同时，也增加了代码的重复性。比如说">
-<meta name="twitter:image" content="http://yoursite.com/2018/01/05/AOP思想与SpringAOP实现机制/69108342.png">
+<meta name="twitter:image" content="https://yuyue888.github.io/2018/01/05/AOP思想与SpringAOP实现机制/69108342.png">
 
 
 
@@ -136,7 +136,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/01/05/AOP思想与SpringAOP实现机制/"/>
+  <link rel="canonical" href="https://yuyue888.github.io/2018/01/05/AOP思想与SpringAOP实现机制/"/>
 
 
 
@@ -269,7 +269,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/01/05/AOP思想与SpringAOP实现机制/">
+  <link itemprop="mainEntityOfPage" href="https://yuyue888.github.io/2018/01/05/AOP思想与SpringAOP实现机制/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="Sunsc">
