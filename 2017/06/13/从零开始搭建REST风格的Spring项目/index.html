@@ -136,7 +136,11 @@
 
   <title> 从零开始搭建REST风格的Spring项目（一） | 咸鱼开发修炼之路 </title>
 </head>
-
+<script>
+    // 判断非本机且未使用 https 时，强制重定向到 https。
+    if ((!window.location.host.startsWith("localhost")) && (window.location.protocol != "https:"))
+        window.location = window.location.toString().replace(/^http:/, "https:");
+</script>
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
   
@@ -439,7 +443,7 @@
     </div>
   </div>
 
-          
+
           </div>
           
 
